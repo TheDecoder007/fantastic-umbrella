@@ -8,31 +8,26 @@ router.get("/", (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   console.log("======================");
-  Post.findAll({
+  Product.findAll({
     attributes: [
       "id",
       "product_name",
       "price",
       "stock",
-      // [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
-    order: [["created_at", "DESC"]],
     include: [
       {
         model: Category,
         attributes: ["id", "category_name"],
       },
       {
-        model: ProductTag,
-        attributes: ["tag_id"],
-        include: {
-          model: Tag,
-          attributes: ["id", "tag_name"],
-        },
+        model: Tag,
+        attributes: ["id", "tag_name"],
+      
       },
     ],
   })
-    .then((dbPostData) => res.json(dbPostData))
+    .then((dbProductData) => res.json(dbProductData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -54,21 +49,18 @@ router.get("/:id", (req, res) => {
         attributes: ["id", "category_name"],
       },
       {
-        model: ProductTag,
-        attributes: ["tag_id"],
-        include: {
-          model: Tag,
-          attributes: ["id", "tag_name"],
-        },
+        model: Tag,
+        attributes: ["id", "tag_name"],
+        
       },
     ],
   })
-    .then((dbUserData) => {
-      if (!dbUserData) {
+    .then((dcProductData) => {
+      if (!dcProductData) {
         res.status(404).json({ message: "No product found with this id" });
         return;
       }
-      res.json(dbUserData);
+      res.json(dcProductData);
     })
     .catch((err) => {
       console.log(err);
@@ -157,6 +149,22 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+    .then((dbProductData) => {
+      if (!dbProductData) {
+        res.status(404).json({ message: "No product found with this id" });
+        return;
+      }
+      res.json(dbProductData);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;

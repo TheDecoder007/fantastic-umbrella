@@ -11,21 +11,16 @@ router.get('/', (req, res) => {
     attributes: [
       "id",
       "tag_name",
-      // [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
-    order: [["created_at", "DESC"]],
     include: [
       {
-        model: ProductTag,
-        attributes: ["id"],
-        include: {
-          model: Product,
-          attributes: ['product_id']
-        }
+        model: Product,
+        attributes: ['product_id'],
+     
       }
     ]
   })
-    .then((dbPostData) => res.json(dbPostData))
+    .then((dbTagData) => res.json(dbTagData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -42,26 +37,21 @@ router.get('/:id', (req, res) => {
     attributes: [
       "id",
       "tag_name",
-      // [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
-    order: [["created_at", "DESC"]],
     include: [
       {
-        model: ProductTag,
-        attributes: ["id"],
-        include: {
-          model: Product,
-          attributes: ['product_id']
-        }
+        model: Product,
+        attributes: ['product_id'],
+   
       }
     ]
   })
-    .then(dbPostData => {
-      if (!dbPostData) {
+    .then(dbTagData => {
+      if (!dbTagData) {
         res.status(404).json({ message: 'No post found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbTagData);
     })
     .catch(err => {
       console.log(err);
@@ -74,7 +64,7 @@ router.post('/', (req, res) => {
   Tag.create({
     tag_name: req.body.tag_name,
   })
-    .then(dbPostData => res.json(dbPostData))
+    .then(dbTagData => res.json(dbTagData))
     .catch(err => {
       console.log(err);
       res.status(500).json(err);
@@ -93,12 +83,12 @@ router.put('/:id', (req, res) => {
       }
     }
   )
-    .then(dbPostData => {
-      if (!dbPostData) {
+    .then(dbTagData => {
+      if (!dbTagData) {
         res.status(404).json({ message: 'No tag found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbTagData);
     })
     .catch(err => {
       console.log(err);
@@ -113,12 +103,12 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-    .then(dbPostData => {
-      if (!dbPostData) {
+    .then(dbTagData => {
+      if (!dbTagData) {
         res.status(404).json({ message: 'No tag found with this id' });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbTagData);
     })
     .catch(err => {
       console.log(err);

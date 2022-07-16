@@ -11,17 +11,15 @@ router.get("/", (req, res) => {
     attributes: [
       "id",
       "category_name",
-      // [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
-    order: [["created_at", "DESC"]],
     include: [
       {
         model: Product,
-        attributes: ["id", "product_name", "post_id", "price", "stock"],
+        attributes: ["id", "product_name", "price", "stock"],
       },
     ],
   })
-    .then((dbPostData) => res.json(dbPostData))
+    .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -38,21 +36,20 @@ router.get("/:id", (req, res) => {
     attributes: [
       "id",
       "category_name",
-      // [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
     ],
     include: [
       {
         model: Product,
-        attributes: ["id", "product_name", "post_id", "price", "stock"],
+        attributes: ["id", "product_name", "price", "stock"],
       },
     ],
   })
-    .then((dbPostData) => {
-      if (!dbPostData) {
+    .then((dbCategoryData) => {
+      if (!dbCategoryData) {
         res.status(404).json({ message: "No category found with this id" });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbCategoryData);
     })
     .catch((err) => {
       console.log(err);
@@ -65,7 +62,7 @@ router.post("/", (req, res) => {
   Category.create({
     category_name: req.body.category_name,
   })
-    .then((dbPostData) => res.json(dbPostData))
+    .then((dbCategoryData) => res.json(dbCategoryData))
     .catch((err) => {
       console.log(err);
       res.status(500).json(err);
@@ -84,12 +81,12 @@ router.put("/:id", (req, res) => {
       },
     }
   )
-    .then((dbPostData) => {
-      if (!dbPostData) {
+    .then((dbCategoryData) => {
+      if (!dbCategoryData) {
         res.status(404).json({ message: "No category found with this id" });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbCategoryData);
     })
     .catch((err) => {
       console.log(err);
@@ -104,12 +101,12 @@ router.delete("/:id", (req, res) => {
       id: req.params.id,
     },
   })
-    .then((dbPostData) => {
-      if (!dbPostData) {
+    .then((dbCategoryData) => {
+      if (!dbCategoryData) {
         res.status(404).json({ message: "No category found with this id" });
         return;
       }
-      res.json(dbPostData);
+      res.json(dbCategoryData);
     })
     .catch((err) => {
       console.log(err);
