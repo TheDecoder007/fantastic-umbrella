@@ -17,4 +17,4 @@ E-Commerce back end for tracking products using ORM
 
 - Github link: https://github.com/TheDecoder007/fantastic-umbrella
 
-- Walkthrough video link:
+- Walkthrough video link: https://drive.google.com/file/d/1DyAFas0fBsCuJ5fLlvtxs8U1sRkDwjiB/view
